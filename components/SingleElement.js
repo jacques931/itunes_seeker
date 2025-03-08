@@ -1,14 +1,19 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
+import FavoriteButton from './FavoriteButton';
+import RatingStars from './RatingStars';
 
-export default function SingleElement({ item, searchType, navigation }) {
+export default function SingleElement({ item, navigation, isFavorite, getRating, onToggleFavorite }) {
+  const isArtist = item.type === 'musicArtist';
+  const rating = getRating(item);
+
   return (
     <TouchableOpacity
       style={styles.resultItem}
       onPress={() => navigation.navigate('Details', { item })}
     >
       <View style={styles.container}>
-        {searchType === 'song' && (
+        {!isArtist && item.artworkUrl60 && (
           <Image 
             source={{ uri: item.artworkUrl60 }} 
             style={styles.image}
@@ -16,16 +21,25 @@ export default function SingleElement({ item, searchType, navigation }) {
           />
         )}
         <View style={styles.textContainer}>
-          <Text style={styles.itemTitle}>
-            {searchType === 'musicArtist' ? item.artistName : item.trackName}
-          </Text>
-          {searchType === 'song' && (
+          <Text style={styles.itemTitle}>{isArtist ? item.artistName : item.trackName}</Text>
+          {!isArtist && (
             <>
               <Text style={styles.itemSubtitle}>{item.artistName}</Text>
               <Text style={styles.itemGenre}>{item.primaryGenreName}</Text>
             </>
           )}
+          {isFavorite && rating > 0 && (
+            <RatingStars rating={rating} size={12} onRatingChange={() => {}} />
+          )}
         </View>
+        <FavoriteButton
+          isFavorite={isFavorite}
+          onPress={(e) => {
+            e.stopPropagation();
+            onToggleFavorite && onToggleFavorite();
+          }}
+          size={24}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -65,5 +79,15 @@ const styles = StyleSheet.create({
     color: '#888',
     marginTop: 2,
     fontStyle: 'italic',
+  },
+  favoriteButton: {
+    padding: 8,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  starIcon: {
+    marginRight: 2,
   },
 });

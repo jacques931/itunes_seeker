@@ -1,9 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import InfoRow from './InfoRow';
+import RatingStars from './RatingStars';
+import FavoriteButton from './FavoriteButton';
 
-export default function DetailsScreen({ route }) {
+export default function DetailsScreen({ route, getIsFavorite, getRating, setRating, toggleFavorite }) {
   const { item } = route.params;
+  const isArtist = item.type === 'musicArtist';
+  const isFavorite = getIsFavorite(item);
+  const currentRating = getRating(item);
 
   const formatDate = (dateString) => {
     if (!dateString) return null;
@@ -25,8 +30,7 @@ export default function DetailsScreen({ route }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-
-        {item.artworkUrl100 && (
+        {!isArtist && item.artworkUrl100 && (
           <Image
             source={{ uri: item.artworkUrl100?.replace('100x100', '600x600') }}
             style={styles.artwork}
@@ -35,11 +39,23 @@ export default function DetailsScreen({ route }) {
 
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
-            {item.trackName || item.artistName}
+            {isArtist ? item.artistName : item.trackName}
           </Text>
-          {item.trackName && (
+          {!isArtist && (
             <Text style={styles.artist}>{item.artistName}</Text>
           )}
+          <View style={styles.actionContainer}>
+            <FavoriteButton
+              isFavorite={isFavorite}
+              onPress={(e) => {
+                e.stopPropagation();
+                toggleFavorite && toggleFavorite(item);
+              }}
+            />
+            {isFavorite && (
+              <RatingStars rating={currentRating} onRatingChange={(rating) => setRating(item, rating)} />
+            )}
+          </View>
         </View>
       </View>
 
@@ -53,7 +69,7 @@ export default function DetailsScreen({ route }) {
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -85,6 +101,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#666',
     textAlign: 'center',
+    marginBottom: 12,
+  },
+  actionContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 8,
   },
   infoContainer: {
     padding: 16,

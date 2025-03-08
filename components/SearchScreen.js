@@ -2,20 +2,25 @@ import React, { useState } from 'react';
 import { View, TextInput, FlatList, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import SingleElement from './SingleElement';
 
-export default function SearchScreen({ navigation }) {
+export default function SearchScreen({ navigation, getIsFavorite, getRating, toggleFavorite }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState('song');
   const [results, setResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const limit = 30;
 
   const searchItunes = async () => {
     try {
-      setHasSearched(true);
       const response = await fetch(
-        `https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&entity=${searchType}`
+        `https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&entity=${searchType}&limit=${limit}`
       );
       const data = await response.json();
-      setResults(data.results);
+
+      setResults(data.results.map(item => ({
+        ...item,
+        type: searchType,
+      })));
+      setHasSearched(true);
     } catch (error) {
       console.error('Erreur de recherche:', error);
       setResults([]);
@@ -62,17 +67,17 @@ export default function SearchScreen({ navigation }) {
         </View>
 
         <View style={styles.typeContainer}>
-        <TouchableOpacity
+          <TouchableOpacity
             style={[styles.typeButton, searchType === 'song' && styles.activeType]}
             onPress={() => handleSearchType('song')}
           >
-            <Text style={styles.typeText}>Titres</Text>
+            <Text style={[styles.typeText, searchType === 'song' && styles.activeTypeText]}>Titres</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.typeButton, searchType === 'musicArtist' && styles.activeType]}
             onPress={() => handleSearchType('musicArtist')}
           >
-            <Text style={styles.typeText}>Artistes</Text>
+            <Text style={[styles.typeText, searchType === 'musicArtist' && styles.activeTypeText]}>Artistes</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -80,16 +85,21 @@ export default function SearchScreen({ navigation }) {
       <FlatList
         data={results}
         renderItem={({ item }) => (
-          <SingleElement item={item} searchType={searchType} navigation={navigation} />
+          <SingleElement 
+            item={item} 
+            getRating={getRating}
+            navigation={navigation}
+            isFavorite={getIsFavorite(item)}
+            onToggleFavorite={() => toggleFavorite(item)}
+          />
         )}
         keyExtractor={(item, index) => index.toString()}
         style={styles.list}
         ListEmptyComponent={renderEmptyList}
       />
-
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -138,6 +148,9 @@ const styles = StyleSheet.create({
   },
   typeText: {
     fontWeight: '600',
+  },
+  activeTypeText: {
+    color: '#fff',
   },
   list: {
     flex: 1,

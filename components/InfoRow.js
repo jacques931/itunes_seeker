@@ -7,7 +7,7 @@ export default function InfoRow({ label, value }) {
   return (
     <View style={styles.infoRow}>
       <Text style={styles.label}>{label}:</Text>
-      <Text>{value}</Text>
+      <Text style={styles.value}>{value}</Text>
     </View>
   );
 };
@@ -24,5 +24,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     fontWeight: '600',
+  },
+  value: {
+    flex: 2,
+    fontSize: 16,
+    color: '#333',
   },
 });
