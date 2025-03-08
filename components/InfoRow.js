@@ -1,0 +1,28 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+export default function InfoRow({ label, value }) {
+  if (!value) return null;
+  
+  return (
+    <View style={styles.infoRow}>
+      <Text style={styles.label}>{label}:</Text>
+      <Text>{value}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  infoRow: {
+    flexDirection: 'row',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  label: {
+    flex: 1,
+    fontSize: 16,
+    color: '#666',
+    fontWeight: '600',
+  },
+});
