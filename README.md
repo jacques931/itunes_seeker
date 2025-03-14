@@ -56,5 +56,4 @@ Cette application utilise l'[API iTunes Search](https://developer.apple.com/libr
 - React Native
 - Expo
 - React Navigation
-- AsyncStorage (pour le stockage local)
 - API iTunes Search
