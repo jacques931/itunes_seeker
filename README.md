@@ -1,6 +1,7 @@
 # iTunes Seeker Mobile
 
 Une application mobile développée avec React Native et Expo permettant d'explorer la base de données iTunes via l'API publique d'Apple.
+> **Note :** Ce projet a été réalisé dans le cadre d'un projet scolaire pour démontrer mes compétences techniques et pratiques en développement web.
 
 ## Fonctionnalités
 
@@ -55,5 +56,4 @@ Cette application utilise l'[API iTunes Search](https://developer.apple.com/libr
 - React Native
 - Expo
 - React Navigation
-- AsyncStorage (pour le stockage local)
 - API iTunes Search
