@@ -10,6 +10,7 @@ import FavoritesScreen from './components/FavoritesScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// Stack navigator for search screen
 function SearchStack({ getIsFavorite, getRating, setRating, toggleFavorite }) {
   return (
     <Stack.Navigator>
@@ -23,6 +24,7 @@ function SearchStack({ getIsFavorite, getRating, setRating, toggleFavorite }) {
   );
 }
 
+// Stack navigator for favorites screen
 function FavoritesStack({ favorites, getIsFavorite, getRating, setRating, toggleFavorite }) {
   return (
     <Stack.Navigator>
@@ -39,6 +41,7 @@ function FavoritesStack({ favorites, getIsFavorite, getRating, setRating, toggle
 export default function App() {
   const [favorites, setFavorites] = useState([]);
 
+  // Function to toggle favorite status
   const toggleFavorite = (item) => {
     const isFavorite = getIsFavorite(item);
     if (isFavorite) {
@@ -52,6 +55,7 @@ export default function App() {
     }
   };
 
+  // Function to check if an item is a favorite
   const getIsFavorite = (item) => {
     return favorites.some(fav => 
       item.type === 'musicArtist' 
@@ -60,6 +64,7 @@ export default function App() {
     );
   };
 
+  // Function to get the rating of a favorite item
   const getRating = (item) => {
     const isFavorite = getIsFavorite(item);
     return isFavorite 
@@ -71,6 +76,7 @@ export default function App() {
     : 0;
   };
 
+  // Function to set the rating of a favorite item
   const setRating = (item, rating) => {
     const isFavorite = getIsFavorite(item);
     if (!isFavorite) {

@@ -3,6 +3,7 @@ import { View, FlatList, Text, StyleSheet } from 'react-native';
 import SingleElement from './SingleElement';
 
 export default function FavoritesScreen({ navigation, favorites = [], getRating, toggleFavorite }) {
+  // Function to render an empty list
   const renderEmptyList = () => (
     <View style={styles.emptyContainer}>
       <Text style={styles.emptyText}>

@@ -10,6 +10,7 @@ export default function DetailsScreen({ route, getIsFavorite, getRating, setRati
   const isFavorite = getIsFavorite(item);
   const currentRating = getRating(item);
 
+  // Function to format a date string
   const formatDate = (dateString) => {
     if (!dateString) return null;
     const date = new Date(dateString);
@@ -20,6 +21,7 @@ export default function DetailsScreen({ route, getIsFavorite, getRating, setRati
     });
   };
 
+  // Function to format a duration in milliseconds
   const formatDuration = (timeInMs) => {
     if (!timeInMs) return null;
     const minutes = Math.floor(timeInMs / 60000);

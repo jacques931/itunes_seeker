@@ -9,17 +9,19 @@ export default function SearchScreen({ navigation, getIsFavorite, getRating, tog
   const [hasSearched, setHasSearched] = useState(false);
   const limit = 30;
 
+  // Function to search iTunes API
   const searchItunes = async () => {
     try {
       const response = await fetch(
         `https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&entity=${searchType}&limit=${limit}`
       );
       const data = await response.json();
-
+      // Filter out non-musical items
       setResults(data.results.map(item => ({
         ...item,
         type: searchType,
       })));
+      // Filter out non-musical items
       setHasSearched(true);
     } catch (error) {
       console.error('Erreur de recherche:', error);
@@ -27,6 +29,7 @@ export default function SearchScreen({ navigation, getIsFavorite, getRating, tog
     }
   };
 
+  // Function to handle search type change
   const handleSearchType = (type) => {
     setSearchType(type);
     setSearchQuery('');
@@ -34,6 +37,7 @@ export default function SearchScreen({ navigation, getIsFavorite, getRating, tog
     setHasSearched(false);
   };
 
+  // Function to render an empty list
   const renderEmptyList = () => {
     if (!hasSearched) return null;
     return (

@@ -4,6 +4,7 @@ import FavoriteButton from './FavoriteButton';
 import RatingStars from './RatingStars';
 
 export default function SingleElement({ item, navigation, isFavorite, getRating, onToggleFavorite }) {
+  // Function to check if an item is a favorite
   const isArtist = item.type === 'musicArtist';
   const rating = getRating(item);
 
